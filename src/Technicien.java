@@ -23,7 +23,8 @@ public class Technicien extends Personne {
 			System.out.println("5: Ajouter du café (en Kg)");
 			System.out.println("6: Ajouter du lait (en litre)");
 			System.out.println("7: Ajouter du sucre (en Kg)");
-			System.out.println("8: Quitter le menu Technicien");
+			System.out.println("8: Récupérer l'argent");
+			System.out.println("9: Quitter le menu Technicien");
 			System.out.println("choix :");
 			
 			choix = clavier.nextInt();
@@ -76,6 +77,12 @@ public class Technicien extends Personne {
 	                 break;
 	                 
 	              case 8: 
+	            	  System.out.println("Somme disponible : "+ getMoney());
+	            	  System.out.println("Veuillez récupérer votre argent.\n");
+	            	  takeMoney();
+	                 break;
+	                 
+	              case 9: 
 	            	  Client cl = new Client();
 	            	  cl.clientMenu();
 	                 break;
@@ -89,6 +96,58 @@ public class Technicien extends Personne {
 	
 	
 		
+
+
+	public void takeMoney() {
+		try {			
+			// input the (modified) file content to the StringBuffer "input"
+	        BufferedReader file = new BufferedReader(new FileReader("coffeeMachine.stats.txt"));
+	        StringBuffer inputBuffer = new StringBuffer();
+	        String line;
+	        
+	        while ((line = file.readLine()) != null) {
+	        	String[] split = line.split(":");
+	        	if (split[0].equals("money")) {
+	            	 double old = Double.parseDouble(split[1]);
+	            	 double neew = 0*old;
+	            	 String newStr = neew+"";
+	            	line = "money:"+newStr;
+	            }
+	            inputBuffer.append(line);
+            	inputBuffer.append('\n');
+	        }
+	        file.close();
+
+	        // write the new string with the replaced line OVER the same file
+	        FileOutputStream fileOut = new FileOutputStream("coffeeMachine.stats.txt");
+	        fileOut.write(inputBuffer.toString().getBytes());
+	        fileOut.close();                     
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+
+
+	public double getMoney() throws NumberFormatException, IOException {
+		double m = 0;
+		String record = null;
+        FileReader in = new FileReader("coffeeMachine.stats.txt");
+
+        @SuppressWarnings("resource")
+		BufferedReader br = new BufferedReader(in);
+        
+        while ((record = br.readLine()) != null) {
+            String[] split = record.split(":");
+            if ("money".equals(split[0])) {
+            	m = Double.parseDouble(split[1]);
+            }
+        }
+		return m;
+	}
+	
+	
+	
+	
 
 
 	public void addSugar(double d) {
@@ -397,7 +456,8 @@ public class Technicien extends Personne {
 			                "\n Thé restant : " + remainingTea() + " Kg"+
 			                "\n Café restante : " + remainingCoffee() + " Kg" +
 			                "\n Lait restant : " + remainingMilk() + " L" +
-			                "\n Sucre restant : " + remainingSugar() + " Kg");
+			                "\n Sucre restant : " + remainingSugar() + " Kg"+
+			                "\n Somme disponible : " + getMoney() + " DH");
         
 	}
 }

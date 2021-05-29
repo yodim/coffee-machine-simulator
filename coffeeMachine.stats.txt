@@ -1,6 +1,7 @@
-totalCups:19
+totalCups:20
 remainingTea:5
-remainingCoffee:4.98
+remainingCoffee:5
 remainingMilk:5
-remainingWater:4.98
-remainingSugar:4.995
+remainingWater:5
+remainingSugar:5
+money:75

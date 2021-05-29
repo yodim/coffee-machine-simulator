@@ -16,15 +16,16 @@ public class Technicien extends Personne {
 		int choix;
 		
 		do {
-			System.out.println("\n1: Afficher les statistiques");
-			System.out.println("2: Ajouter des goblets");
-			System.out.println("3: Ajouter de l'eau (en litre)");
+			System.out.println("\n1: Afficher les statistiques des ressources");
+			System.out.println("2: Afficher des verres servis");
+			System.out.println("3: Ajouter des goblets");			
 			System.out.println("4: Ajouter du thé (en Kg)");
 			System.out.println("5: Ajouter du café (en Kg)");
 			System.out.println("6: Ajouter du lait (en litre)");
 			System.out.println("7: Ajouter du sucre (en Kg)");
-			System.out.println("8: Récupérer l'argent");
-			System.out.println("9: Quitter le menu Technicien");
+			System.out.println("8: Ajouter de l'eau (en litre)");
+			System.out.println("9: Récupérer l'argent");
+			System.out.println("0: Quitter le menu Technicien");
 			System.out.println("choix :");
 			
 			choix = clavier.nextInt();
@@ -34,14 +35,11 @@ public class Technicien extends Personne {
 	        	   statistics();
 	                 break;
 	                 
-	              case 2:
-	            	  System.out.println("Entrer la quantité de goblets à ajouter :");
-	            	  int qtt = clavier.nextInt();
-	            	  addGoblets(qtt);
-	            	  System.out.println("Ajouté avec succès !");
+	           	  case 2:
+	            	  servedCups();
 	                 break;
 	                 
-	              case 3:
+	              case 8:
 	            	  System.out.println("Entrer la quantité d'eau à ajouter (en L):");
 	            	  double eauQtt = clavier.nextDouble();
 	            	  addWater(eauQtt);
@@ -76,13 +74,20 @@ public class Technicien extends Personne {
 	            	  System.out.println("Ajouté avec succès !");
 	                 break;
 	                 
-	              case 8: 
-	            	  System.out.println("Somme disponible : "+ getMoney());
-	            	  System.out.println("Veuillez récupérer votre argent.\n");
-	            	  takeMoney();
+	              case 3:
+	            	  System.out.println("Entrer la quantité de goblets à ajouter :");
+	            	  int qtt = clavier.nextInt();
+	            	  addGoblets(qtt);
+	            	  System.out.println("Ajouté avec succès !");
 	                 break;
 	                 
 	              case 9: 
+	            	  System.out.println("Somme disponible : "+ getMoney());
+	            	  System.out.println("Veuillez récupérer votre argent.\n");
+	            	  takeMoney(-getMoney());
+	                 break;
+	                 
+	              case 0: 
 	            	  Client cl = new Client();
 	            	  cl.clientMenu();
 	                 break;
@@ -98,7 +103,33 @@ public class Technicien extends Personne {
 		
 
 
-	public void takeMoney() {
+	public void servedCups() throws NumberFormatException, IOException {
+		int tea = 0;
+		int coffee = 0;
+		String record = null;
+        FileReader in = new FileReader("coffeeMachine.stats.txt");
+
+        @SuppressWarnings("resource")
+		BufferedReader br = new BufferedReader(in);
+        
+        while ((record = br.readLine()) != null) {
+            String[] split = record.split(":");
+            if ("servedCups".equals(split[0])) {
+            	tea = Integer.parseInt(split[1]);
+            	coffee = Integer.parseInt(split[2]);
+            }
+        }
+        System.out.println("\nStatistics :" +
+			                "\nVerres de Thé servis : " + tea +
+			                "\nVerres de Café servis : " + coffee);
+	}
+	
+	
+		
+
+
+
+	public void takeMoney(double i) {
 		try {			
 			// input the (modified) file content to the StringBuffer "input"
 	        BufferedReader file = new BufferedReader(new FileReader("coffeeMachine.stats.txt"));
@@ -109,7 +140,7 @@ public class Technicien extends Personne {
 	        	String[] split = line.split(":");
 	        	if (split[0].equals("money")) {
 	            	 double old = Double.parseDouble(split[1]);
-	            	 double neew = 0*old;
+	            	 double neew = i + old;
 	            	 String newStr = neew+"";
 	            	line = "money:"+newStr;
 	            }
@@ -460,5 +491,66 @@ public class Technicien extends Personne {
 			                "\n Somme disponible : " + getMoney() + " DH");
         
 	}
+
+
+	public void teaStat(int i) {
+		try {			
+			// input the (modified) file content to the StringBuffer "input"
+	        BufferedReader file = new BufferedReader(new FileReader("coffeeMachine.stats.txt"));
+	        StringBuffer inputBuffer = new StringBuffer();
+	        String line;
+	        
+	        while ((line = file.readLine()) != null) {
+	        	String[] split = line.split(":");
+	        	if (split[0].equals("servedCups")) {
+	            	 int old = Integer.parseInt(split[1]);
+	            	 int neew = i+old;
+	            	 String newStr = neew+"";
+	            	line = "servedCups:"+newStr+":"+split[2];
+	            }
+	            inputBuffer.append(line);
+            	inputBuffer.append('\n');
+	        }
+	        file.close();
+
+	        // write the new string with the replaced line OVER the same file
+	        FileOutputStream fileOut = new FileOutputStream("coffeeMachine.stats.txt");
+	        fileOut.write(inputBuffer.toString().getBytes());
+	        fileOut.close();                     
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+
+
+	public void coffeeStat(int i) {
+		try {			
+			// input the (modified) file content to the StringBuffer "input"
+	        BufferedReader file = new BufferedReader(new FileReader("coffeeMachine.stats.txt"));
+	        StringBuffer inputBuffer = new StringBuffer();
+	        String line;
+	        
+	        while ((line = file.readLine()) != null) {
+	        	String[] split = line.split(":");
+	        	if (split[0].equals("servedCups")) {
+	            	 int old = Integer.parseInt(split[2]);
+	            	 int neew = i+old;
+	            	 String newStr = neew+"";
+	            	line = "servedCups:"+split[1]+":"+newStr;
+	            }
+	            inputBuffer.append(line);
+            	inputBuffer.append('\n');
+	        }
+	        file.close();
+
+	        // write the new string with the replaced line OVER the same file
+	        FileOutputStream fileOut = new FileOutputStream("coffeeMachine.stats.txt");
+	        fileOut.write(inputBuffer.toString().getBytes());
+	        fileOut.close();                     
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+
 }
 

@@ -46,6 +46,7 @@ public class Client extends Personne {
 			         	  tech.addTea(-0.02);
 			         	  tech.addWater(-0.02);
 			         	  tech.addGoblets(-1);
+			         	  tech.teaStat(1);
 		         	  }
 		         	  else {
 		         		 System.out.println("Désolé ! pas assez de ressources :/");
@@ -60,6 +61,7 @@ public class Client extends Personne {
 		            	  tech.addCoffee(-0.02);
 		            	  tech.addWater(-0.02);
 		            	  tech.addGoblets(-1);
+		            	  tech.coffeeStat(1);
 		         	  }
 		         	  else {
 		         		 System.out.println("Désolé ! pas assez de ressources :/");
@@ -74,6 +76,7 @@ public class Client extends Personne {
 		            	  tech.addCoffee(-0.01);
 		            	  tech.addMilk(-0.01);
 		            	  tech.addGoblets(-1);
+		            	  tech.coffeeStat(1);
 		         	  }
 		         	  else {
 		         		 System.out.println("Désolé ! pas assez de ressources :/");
@@ -89,6 +92,7 @@ public class Client extends Personne {
 		            	  tech.addSugar(-0.005);
 		            	  tech.addWater(-0.02);
 		            	  tech.addGoblets(-1);
+		            	  tech.coffeeStat(1);
 		         	  }
 		         	  else {
 		         		 System.out.println("Désolé ! pas assez de ressources :/");
@@ -103,6 +107,7 @@ public class Client extends Personne {
 		            	  tech.addCoffee(-0.01);
 		            	  tech.addWater(-0.02);
 		            	  tech.addGoblets(-1);
+		            	  tech.coffeeStat(1);
 		         	  }
 		         	  else {
 		         		 System.out.println("Désolé ! pas assez de ressources :/");
@@ -147,9 +152,11 @@ public class Client extends Personne {
 		System.out.println("Insérez " + DrinkPrice + " dirhams.");
 		int InsertedMoney = clavier.nextInt();
 		int change = changeClacul(DrinkPrice, InsertedMoney);
+		Technicien tech = new Technicien();
 		
 		if (change == 0) {
 			PrepareDrink();
+			tech.takeMoney(DrinkPrice);
 		}
 		if (change < 0) {
 			System.out.println("montant insufisant !");
@@ -158,6 +165,7 @@ public class Client extends Personne {
 			System.out.println("Montant à retouner : " + change + " dirhams.");
 			System.out.println("Veuillez récuperer votre change.\n");
 			PrepareDrink();
+			tech.takeMoney(DrinkPrice);
 		}
 	}
 

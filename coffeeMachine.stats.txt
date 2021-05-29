@@ -1,4 +1,5 @@
 totalCups:20
+servedCups:5:5
 remainingTea:5
 remainingCoffee:5
 remainingMilk:5

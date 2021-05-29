@@ -524,8 +524,7 @@ public class Technicien extends Personne {
 
 
 	public void coffeeStat(int i) {
-		try {			
-			// input the (modified) file content to the StringBuffer "input"
+		try {
 	        BufferedReader file = new BufferedReader(new FileReader("coffeeMachine.stats.txt"));
 	        StringBuffer inputBuffer = new StringBuffer();
 	        String line;
@@ -543,7 +542,6 @@ public class Technicien extends Personne {
 	        }
 	        file.close();
 
-	        // write the new string with the replaced line OVER the same file
 	        FileOutputStream fileOut = new FileOutputStream("coffeeMachine.stats.txt");
 	        fileOut.write(inputBuffer.toString().getBytes());
 	        fileOut.close();                     

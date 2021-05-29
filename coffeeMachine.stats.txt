@@ -1,4 +1,4 @@
-totalCups:20
+totalCups:25
 servedCups:5:5
 remainingTea:5
 remainingCoffee:5

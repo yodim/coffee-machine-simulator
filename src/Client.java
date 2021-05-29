@@ -136,7 +136,7 @@ public class Client extends Personne {
 	
 	
 	static boolean PrepareDrink() throws InterruptedException {
-		Thread.sleep(1000);
+		Thread.sleep(1000);		// 1000ms = 1s 
 		System.out.println("\nVotre boisson est en train de prépration...");
 		System.out.println("Veuillez attendre un petit moment.");
 		Thread.sleep(10000); 	// 10000ms = 10s 
